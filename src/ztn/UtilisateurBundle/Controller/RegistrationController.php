@@ -27,13 +27,11 @@ class RegistrationController extends baseController
 {
     public function registerAction()
     {
-     //   var_dump('1');exit();
         $form = $this->container->get('fos_user.registration.form');
         $formHandler = $this->container->get('fos_user.registration.form.handler');
         $confirmationEnabled = $this->container->getParameter('fos_user.registration.confirmation.enabled');
 
         $process = $formHandler->process($confirmationEnabled);
-        var_dump('1');
         if ($process) {
             $user = $form->getData();
 
