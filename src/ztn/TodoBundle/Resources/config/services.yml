@@ -1,0 +1,7 @@
+parameters:
+#    ztn_todo.example.class: ztn\TodoBundle\Example
+
+services:
+#    ztn_todo.example:
+#        class: %ztn_todo.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

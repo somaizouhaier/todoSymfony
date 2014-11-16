@@ -1,0 +1,21 @@
+{% extends "::layout.html.twig" %}
+
+{% block container %}
+
+<form id="login" action="{{ path("fos_user_security_check") }}" method="post" class="form-login">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+    <table>
+        <tr>
+            <td><label class="control-label" for="username">email:</label></td>
+            <td><input type="text" id="username" name="_username" value="{{ last_username }}" required="required" /></td>
+        </tr>
+        <tr>
+            <td><label class="control-label" for="password">mot de passe</label></td>
+            <td><input type="password" id="password" name="_password" required="required" /></td>
+        </tr>
+        
+    </table>
+    <input type="submit" class="submit" id="_submit" name="_submit" value="connexion" />
+    <input type="button" class="submit" onclick="window.location.href='{{path("ztn_utilisateur_registration_register")}}'" name="_submit" value="inscrire" />
+</form>
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends "::layout.html.twig" %}
+
+{% block container %}
+    <form action="{{path('ztn_todo_homepage')}}" method="post">
+        {{ form_widget(form.name, {'attr': {'placeholder': 'Ajouter une Nouvelle tâche', 'autofocus':'' ,'autocomplete':'' }}) }}
+    </form>
+{% endblock %}
+
+{% block content %}
+    {% set nbrEventRestant = 0 %}
+    <section id="main">
+        <input type="checkbox" id="toggle-all">
+        <ul id="todo-list">
+            {% for event in events %}
+                <li 
+                    {% if(event.etat == 1) %}
+                        {% set nbrEventRestant = nbrEventRestant + 1 %}
+                        class="nonCompleted"
+                    {% else %}
+                        class="completed"
+                    {% endif %}
+                    >
+                    <div id="id" style="display:none">{{event.id}}</div>
+                    <div class="view">
+                        <input type="checkbox" class="toggle" {% if(event.etat == 0) %} checked {% endif %}>
+                        <label>{{event.name}}</label>
+                        <button class="destroy"></button>
+                    </div>
+                    <form action="{{path('ztn_todo_editing')}}" method="post">
+                        <input class="edit" name="{{event.id}}" value="{{event.name}}">
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <footer id="footer">
+        <span id="todo-count"><strong id="nbrEventRestant">{{ nbrEventRestant }}</strong> Tâches restantes</span>
+        <ul id="filters">
+            <li><a href="javascript:none" class="selected listTous">Toutes</a></li>
+            <li><a href="javascript:none" class="listActive">Active</a></li>
+            <li><a href="javascript:none" class="listFini">Finit</a></li>
+        </ul>
+    </footer>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(document).on('click', 'li a', function(ev) {
+                $('#filters li a').removeClass('selected');
+                $(this).addClass('selected');
+                if ($(this).hasClass('listActive')) {
+                    $('.completed').hide('slow');
+                    $('.nonCompleted').show('slow');
+                } else if ($(this).hasClass('listFini')) {
+                    $('.completed').show('slow');
+                    $('.nonCompleted').hide('slow');
+                } else if ($(this).hasClass('listTous')) {
+                    $('.completed').show('slow');
+                    $('.nonCompleted').show('slow');
+                }
+            });
+            $(document).on('dblclick', 'label', function(ev) {
+                $(this).closest('li').addClass('editing');
+            });
+            $(document).on('click', '.view input[type="checkbox"]', function(ev) {
+                $(this).closest('li').toggleClass('completed');
+                $(this).closest('li').toggleClass('nonCompleted');
+                if ($(this).is(':checked'))
+                    $('#nbrEventRestant').html(parseInt($('#nbrEventRestant').html()) - 1);
+                else
+                    $('#nbrEventRestant').html(parseInt($('#nbrEventRestant').html()) + 1);
+                $.ajax({
+                    type: "POST",
+                    url: "{{path('ztn_todo_editEtat')}}",
+                    data: {'id': $(this).closest('li').find('#id').html()},
+                    success: function(data) {
+                        console.log(data);
+                    }
+                });
+            });
+            $(document).on('click', '#toggle-all', function(ev) {
+                var si_unique = true;
+                var valeur = "";
+                $('#todo-list li').each(function(index) {
+                    if (index == 0) {
+                        if ($(this).hasClass('completed'))
+                            valeur = 'completed';
+                        else
+                            valeur = 'nonCompleted';
+                    } else {
+                        if (($(this).hasClass('completed') && valeur == 'nonCompleted') || ($(this).hasClass('nonCompleted') && valeur == 'completed')) {
+                            si_unique = false;
+                        }
+                    }
+                });
+                console.log(valeur);
+                if (si_unique) {
+                    $('.view input[type="checkbox"]').click();
+                } else {
+                    $('.view input[type="checkbox"]:not(:checked)').click();
+                }
+            });
+            $(document).on('click', '.destroy', function(ev) {
+                $(this).closest('li').remove();
+                $('#nbrEventRestant').html(parseInt($('#nbrEventRestant').html()) - 1);
+                $.ajax({
+                    type: "POST",
+                    url: "{{path('ztn_todo_delete')}}",
+                    data: {'id': $(this).closest('li').find('#id').html()},
+                    success: function(data) {
+                        console.log(data);
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

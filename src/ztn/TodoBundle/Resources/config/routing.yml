@@ -1,0 +1,19 @@
+ztn_todo_homepage:
+    path:     /bienvenue
+    defaults: { _controller: ztnTodoBundle:Todo:index }
+
+ztn_todo_display:
+    path:     /display
+    defaults: { _controller: ztnTodoBundle:Todo:display }
+    
+ztn_todo_editing:
+    path:     /editing
+    defaults: { _controller: ztnTodoBundle:Todo:edit }
+    
+ztn_todo_delete:
+    path:     /delete
+    defaults: { _controller: ztnTodoBundle:Todo:delete }
+    
+ztn_todo_editEtat:
+    path:     /editEtat
+    defaults: { _controller: ztnTodoBundle:Todo:editEtat }

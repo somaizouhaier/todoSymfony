@@ -1,0 +1,18 @@
+parameters:
+#    ztn_utilisateur.example.class: ztn\UtilisateurBundle\Example
+
+services:
+    ztn_utilisateur.registration.form.type:
+        class: ztn\UtilisateurBundle\Form\Type\RegistrationFormType
+        arguments: ['@service_container']
+        tags:
+          - { name: form.type, alias: ztn_utilisateur_registration }
+          
+    ztn_utilisateur.handler.registration:
+        class: ztn\UtilisateurBundle\Form\Handler\RegistrationFormHandler
+        arguments: ["@fos_user.registration.form", "@request", "@fos_user.user_manager", "@fos_user.mailer", "@fos_user.util.token_generator"]
+        scope: request
+        
+    authentication_handler:
+        class:  ztn\UtilisateurBundle\Form\Handler\AuthenticationHandler
+        arguments: ["@http_kernel", "@security.http_utils",{}, "@logger", "@translator", "@service_container" ]

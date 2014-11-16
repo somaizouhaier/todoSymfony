@@ -1,0 +1,3 @@
+ztn_service_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: ztnServiceBundle:Default:index }

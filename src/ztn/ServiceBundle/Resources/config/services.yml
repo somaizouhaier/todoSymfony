@@ -1,0 +1,7 @@
+parameters:
+#    ztn_service.example.class: ztn\ServiceBundle\Example
+
+services:
+#    ztn_service.example:
+#        class: %ztn_service.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

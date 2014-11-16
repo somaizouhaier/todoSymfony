@@ -1,0 +1,9 @@
+zou_utilisateur_compte:
+    pattern:  /
+    defaults: { _controller: ztnUtilisateurBundle:Security:login }
+zou_utilisateur_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: ztnUtilisateurBundle:Default:index }
+ztn_utilisateur_inscrieFacebook:
+    pattern:  /inscrieFacebook
+    defaults: { _controller: ztnUtilisateurBundle:Utilisateur:inscrieFacebook }
