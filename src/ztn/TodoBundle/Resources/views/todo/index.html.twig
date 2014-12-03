@@ -71,7 +71,7 @@
                 $.ajax({
                     type: "POST",
                     url: "{{path('ztn_todo_editEtat')}}",
-                    data: {'id': $(this).closest('li').find('#id').html()},
+                    data: {'id': $(this).closest('li').find('#id').html(),'etat': $(this).is(':checked')},
                     success: function(data) {
                         console.log(data);
                     }
@@ -92,12 +92,17 @@
                         }
                     }
                 });
-                console.log(valeur);
-                if (si_unique) {
-                    $('.view input[type="checkbox"]').click();
-                } else {
-                    $('.view input[type="checkbox"]:not(:checked)').click();
-                }
+                console.log(si_unique);
+                     $.ajax({
+                    type: "POST",
+                    url: "{{path('ztn_todo_editEtatAll')}}",
+                    data: {'etat': si_unique},
+                    success: function(data) {
+                        console.log(data);
+                        location.reload(true);
+                    }
+                    });
+                
             });
             $(document).on('click', '.destroy', function(ev) {
                 $(this).closest('li').remove();
