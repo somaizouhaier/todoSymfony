@@ -17,3 +17,7 @@ ztn_todo_delete:
 ztn_todo_editEtat:
     path:     /editEtat
     defaults: { _controller: ztnTodoBundle:Todo:editEtat }
+    
+ztn_todo_editEtatAll:
+    path:     /editEtatAll
+    defaults: { _controller: ztnTodoBundle:Todo:editEtatAll }
